@@ -1,0 +1,12 @@
+##############################
+## TinyServer Configuration ##
+##############################
+
+# Server’s default document root directory
+ROOTDIR=../www
+
+# Default listen port
+PORT=8888
+
+# Default request handling method (only implemented fork)
+METHOD=thread
