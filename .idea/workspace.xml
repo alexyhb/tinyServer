@@ -9,9 +9,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fba244f4-71ac-4fd4-9090-213080591d7d" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/webserver/src/server.c" beforeDir="false" afterPath="$PROJECT_DIR$/webserver/src/server.c" afterDir="false" />
-    </list>
+    <list default="true" id="fba244f4-71ac-4fd4-9090-213080591d7d" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,7 +68,7 @@
       <workItem from="1570653187613" duration="12282000" />
       <workItem from="1570902216479" duration="18659000" />
       <workItem from="1575988674544" duration="34000" />
-      <workItem from="1575990151522" duration="1587000" />
+      <workItem from="1575990151522" duration="1754000" />
     </task>
     <servers />
   </component>
