@@ -132,7 +132,7 @@ int main(int argc,char* argv[])
                    ntohs(cli_addr.sin_port), cli_fd);
 
             // Handle the http request.
-            handle_http_request(cli_fd, root_dir);
+            handler_http_request(cli_fd, root_dir);
 
             close(cli_fd);
 
