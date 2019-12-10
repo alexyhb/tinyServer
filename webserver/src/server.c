@@ -29,7 +29,7 @@ int main(int argc,char* argv[])
     int port_number = DEFAULT_PORT;
     char *root_dir = ROOTDIR;
     char *method = CONCURRENT;
-    int serv_fd，cli_fd;
+    int serv_fd,cli_fd;
     char serv_ip[BUFSIZE], cli_ip[BUFSIZE];
     struct sockaddr_in serv_addr, cli_addr;
     int reuse_on = 1, daemon_on = 0;// if use the daemon process
