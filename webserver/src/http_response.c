@@ -12,8 +12,10 @@
 #include <sys/stat.h>
 #include <stdlib.h>
 #include <errno.h>
+
 #include "var.h"
-#include "../include/http_response.h"
+#include "http_response.h"
+#include "process_manage.h"
 
 void response_400(int sockfd)
 {

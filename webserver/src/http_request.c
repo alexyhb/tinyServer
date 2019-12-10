@@ -14,10 +14,10 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <sys/stat.h>
-#include <curl/curl.h>
-#include <stdio.h>
-#include <stdbool.h>
-#include "../include/http_request.h"
+
+#include "http_request.h"
+#include "http_response.h"
+#include "process_manage.h"
 #include "var.h"
 
 
