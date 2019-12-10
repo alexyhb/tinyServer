@@ -29,7 +29,7 @@ int main(int argc,char* argv[])
     int port_number = DEFAULT_PORT;
     char *root_dir = ROOTDIR;
     char *method = CONCURRENT;
-    int serv_fd;
+    int serv_fd，cli_fd;
     char serv_ip[BUFSIZE], cli_ip[BUFSIZE];
     struct sockaddr_in serv_addr, cli_addr;
     int reuse_on = 1, daemon_on = 0;// if use the daemon process
@@ -39,7 +39,7 @@ int main(int argc,char* argv[])
 
 
     // Get server configuration from config file
-    get_config("./.lab3-config", configList, config_num);
+    get_config("./.lab2-config", configList, config_num);
 
     for(i = 0; i < config_num; i++)
     {
@@ -88,7 +88,25 @@ int main(int argc,char* argv[])
 
     // Declare the server socket
 
-    serv_fd = Creat_socket();
+    serv_fd = Socket(AF_INET, SOCK_STREAM, 0);
+// Reuse same port
+    setsockopt(serv_fd, SOL_SOCKET, SO_REUSEADDR, &reuse_on, sizeof(int));
+
+    socklen_t serv_len = sizeof(serv_addr);
+    socklen_t cli_len = sizeof(cli_addr);
+
+    memset(&serv_addr, 0, serv_len);
+    serv_addr.sin_family = AF_INET;
+    serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);
+    serv_addr.sin_port = htons(port_number);
+
+    //Bind address family
+    Bind(serv_fd, (struct sockaddr *) &serv_addr, serv_len);
+
+    //Listen to the socket
+    Listen(serv_fd, 10);
+
+    // Print the server information
     inet_ntop(AF_INET, &serv_addr.sin_addr.s_addr, serv_ip, sizeof(serv_ip));
     printf("TinyServer %s:%d is working!!!\n",
            inet_ntop(AF_INET, &serv_addr.sin_addr.s_addr, cli_ip, sizeof(cli_ip)),
@@ -96,24 +114,36 @@ int main(int argc,char* argv[])
 
     printf("==========waiting for client's request=========\n");
 
-//    pid_t pid;
+//    pid_t parent_pid = getpid();
+    pid_t pid;
+    while (1) {
 
-    while(1)
-	{
+        cli_fd = Accept(serv_fd, (struct sockaddr *) &cli_addr, &cli_len);
 
-		int client_socket = wait_client(serv_fd);
-		
-		pthread_t id;
-		pthread_create(&id, handler_http_request(client_socket,ROOTDIR), (void *)client_socket,NULL);  //create a thread to deal with the clint
+        pid = Fork();
 
-		pthread_detach(id);   //detach the thread
+        if (pid == 0) {
+            close(serv_fd);
 
+            // Print the client connection information
+            inet_ntop(AF_INET, &cli_addr.sin_addr.s_addr, cli_ip, sizeof(cli_ip));
+            printf("client IP:%s\tport:%d\t%d\n",
+                   inet_ntop(AF_INET, &cli_addr.sin_addr.s_addr, cli_ip, sizeof(cli_ip)),
+                   ntohs(cli_addr.sin_port), cli_fd);
 
-	}
+            // Handle the http request.
+            handle_http_request(cli_fd, root_dir);
 
-	
-	close(serv_fd);
-	
-	
-	return 0;
+            close(cli_fd);
+
+            exit(0);
+        }
+
+        close(cli_fd);
+    }
+
+    close(serv_fd);
+    return 0;
 }
+
+

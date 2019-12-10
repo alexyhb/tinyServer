@@ -9,4 +9,5 @@ ROOTDIR=../www
 PORT=8888
 
 # Default request handling method (only implemented fork)
-METHOD=thread
+METHOD=fork
+
